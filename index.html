@@ -1,300 +1,396 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudentHub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudentHub - Student Management</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#172033}
+header{background:linear-gradient(135deg,#2563eb,#4f46e5);color:white;padding:28px 18px}
+.header-content{max-width:1100px;margin:auto}
+header h1{font-size:30px;margin-bottom:8px}
+header p{opacity:.9}
+nav{background:white;padding:15px 20px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+nav .nav-inner{max-width:1100px;margin:auto;display:flex;gap:20px;align-items:center}
+nav a{color:#374151;text-decoration:none;font-weight:bold}
+.container{max-width:1100px;margin:25px auto;padding:0 18px}
+.welcome{margin-bottom:25px}
+.welcome h2{font-size:26px;margin-bottom:7px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:25px}
+.stat-card{background:white;padding:22px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.08)}
+.stat-card h3{color:#64748b;font-size:15px;margin-bottom:10px}
+.stat-card .number{font-size:32px;font-weight:bold;color:#2563eb}
+section{background:white;padding:24px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.08);margin-bottom:25px}
+.section-header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px;flex-wrap:wrap}
+.section-header h2{font-size:21px}
+.btn{background:#2563eb;color:white;border:none;padding:11px 18px;border-radius:8px;font-weight:bold;cursor:pointer}
+.btn:hover{background:#1d4ed8}
+.btn-danger{background:#dc2626}
+.btn-danger:hover{background:#b91c1c}
+.search{width:100%;padding:13px;border:1px solid #d1d5db;border-radius:8px;margin-bottom:20px;font-size:15px}
+.student-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.student-card{border:1px solid #e5e7eb;border-radius:12px;padding:18px}
+.student-card h3{margin-bottom:10px;color:#1e293b}
+.student-card p{margin:7px 0;color:#64748b;font-size:14px}
+.skill{display:inline-block;background:#e0e7ff;color:#3730a3;padding:5px 9px;border-radius:20px;font-size:12px;margin:5px 4px 0 0}
+.card-actions{display:flex;gap:8px;margin-top:15px}
+.card-actions button{padding:8px 11px;border:none;border-radius:6px;cursor:pointer;font-weight:bold}
+.edit{background:#fef3c7;color:#92400e}
+.delete{background:#fee2e2;color:#991b1b}
+.empty{text-align:center;color:#64748b;padding:25px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);justify-content:center;align-items:center;padding:20px;z-index:10}
+.modal-box{background:white;width:100%;max-width:500px;border-radius:15px;padding:25px}
+.modal-box h2{margin-bottom:18px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;margin-bottom:6px;font-weight:bold}
+.form-group input{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:7px;font-size:15px}
+.form-buttons{display:flex;gap:10px;margin-top:20px}
+.cancel{background:#64748b}
+footer{text-align:center;padding:25px;color:#64748b}
 
-    body {
-      background: #f4f7fb;
-      color: #1f2937;
-    }
-
-    header {
-      background: linear-gradient(135deg, #2563eb, #4f46e5);
-      color: white;
-      padding: 25px 20px;
-    }
-
-    .header-content {
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
-
-    header p {
-      opacity: 0.9;
-    }
-
-    nav {
-      background: white;
-      padding: 15px 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #374151;
-      margin-right: 20px;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: #2563eb;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-
-    .welcome {
-      margin-bottom: 25px;
-    }
-
-    .welcome h2 {
-      font-size: 26px;
-      margin-bottom: 8px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-
-    .stat-card h3 {
-      color: #6b7280;
-      font-size: 15px;
-      margin-bottom: 10px;
-    }
-
-    .stat-card .number {
-      font-size: 32px;
-      font-weight: bold;
-      color: #2563eb;
-    }
-
-    .section {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 15px;
-    }
-
-    .section-header h2 {
-      font-size: 21px;
-    }
-
-    .btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .btn:hover {
-      background: #1d4ed8;
-    }
-
-    .search {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 15px;
-    }
-
-    .student-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .student-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .student-card h3 {
-      margin-bottom: 8px;
-      color: #111827;
-    }
-
-    .student-card p {
-      margin: 6px 0;
-      color: #6b7280;
-      font-size: 14px;
-    }
-
-    .skill {
-      display: inline-block;
-      background: #e0e7ff;
-      color: #3730a3;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-      margin: 5px 3px 0 0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #6b7280;
-    }
-
-    @media (max-width: 768px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .student-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      nav a {
-        display: inline-block;
-        margin-bottom: 8px;
-      }
-    }
-  </style>
+@media(max-width:800px){
+.stats{grid-template-columns:1fr}
+.student-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <div class="header-content">
-      <h1>🎓 StudentHub</h1>
-      <p>Student Management & Skill Tracking Application</p>
-    </div>
-  </header>
+<header>
+<div class="header-content">
+<h1>🎓 StudentHub</h1>
+<p>Student Management and Skill Tracking Application</p>
+</div>
+</header>
 
-  <nav>
-    <a href="#">Dashboard</a>
-    <a href="#">Students</a>
-    <a href="#">Skills</a>
-    <a href="#">About</a>
-  </nav>
+<nav>
+<div class="nav-inner">
+<a href="#dashboard">Dashboard</a>
+<a href="#students">Students</a>
+</div>
+</nav>
 
-  <main class="container">
+<main class="container" id="dashboard">
 
-    <div class="welcome">
-      <h2>Welcome to StudentHub 👋</h2>
-      <p>Manage students, track skills and organize student information.</p>
-    </div>
+<div class="welcome">
+<h2>Welcome to StudentHub 👋</h2>
+<p>Manage students and track their technical skills.</p>
+</div>
 
-    <div class="stats">
+<div class="stats">
+<div class="stat-card">
+<h3>Total Students</h3>
+<div class="number" id="totalStudents">0</div>
+</div>
 
-      <div class="stat-card">
-        <h3>Total Students</h3>
-        <div class="number">25</div>
-      </div>
+<div class="stat-card">
+<h3>Departments</h3>
+<div class="number" id="totalDepartments">0</div>
+</div>
 
-      <div class="stat-card">
-        <h3>Skills Registered</h3>
-        <div class="number">18</div>
-      </div>
+<div class="stat-card">
+<h3>Total Skills</h3>
+<div class="number" id="totalSkills">0</div>
+</div>
+</div>
 
-      <div class="stat-card">
-        <h3>Active Students</h3>
-        <div class="number">22</div>
-      </div>
+<section id="students">
+<div class="section-header">
+<h2>👨‍🎓 Student Management</h2>
+<button class="btn" onclick="openAddModal()">+ Add Student</button>
+</div>
 
-    </div>
+<input
+type="text"
+id="searchInput"
+class="search"
+placeholder="🔎 Search by name, email, department or skill..."
+oninput="displayStudents()"
+>
 
-    <section class="section">
+<div id="studentGrid" class="student-grid"></div>
+</section>
 
-      <div class="section-header">
-        <h2>Student Directory</h2>
-        <button class="btn">+ Add Student</button>
-      </div>
+</main>
 
-      <input
-        type="text"
-        class="search"
-        placeholder="🔍 Search students..."
-      >
+<footer>
+© 2026 StudentHub | Student Management and Skill Tracking
+</footer>
 
-      <div class="student-grid">
+<!-- ADD / EDIT MODAL -->
+<div class="modal" id="studentModal">
+<div class="modal-box">
 
-        <div class="student-card">
-          <h3>Dharani</h3>
-          <p>📧 dharani@example.com</p>
-          <p>💻 CSE</p>
-          <p>🎓 3rd Year</p>
-          <span class="skill">Java</span>
-          <span class="skill">HTML</span>
-          <span class="skill">CSS</span>
-        </div>
+<h2 id="modalTitle">Add Student</h2>
 
-        <div class="student-card">
-          <h3>Rahul</h3>
-          <p>📧 rahul@example.com</p>
-          <p>💻 CSE</p>
-          <p>🎓 3rd Year</p>
-          <span class="skill">Python</span>
-          <span class="skill">SQL</span>
-        </div>
+<form id="studentForm">
 
-        <div class="student-card">
-          <h3>Anusha</h3>
-          <p>📧 anusha@example.com</p>
-          <p>💻 AIML</p>
-          <p>🎓 3rd Year</p>
-          <span class="skill">AI</span>
-          <span class="skill">Python</span>
-        </div>
+<div class="form-group">
+<label>Student Name</label>
+<input type="text" id="name" required placeholder="Enter student name">
+</div>
 
-      </div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="email" required placeholder="Enter email">
+</div>
 
-    </section>
+<div class="form-group">
+<label>Department</label>
+<input type="text" id="department" required placeholder="Example: CSE">
+</div>
 
-  </main>
+<div class="form-group">
+<label>Year</label>
+<input type="text" id="year" required placeholder="Example: 3rd Year">
+</div>
 
-  <footer>
-    © 2026 StudentHub | Student Management & Skill Tracking
-  </footer>
+<div class="form-group">
+<label>Skills</label>
+<input type="text" id="skills" required placeholder="Example: Java, Python, SQL">
+</div>
+
+<div class="form-buttons">
+<button type="submit" class="btn">Save Student</button>
+<button type="button" class="btn cancel" onclick="closeModal()">Cancel</button>
+</div>
+
+</form>
+</div>
+</div>
+
+<script>
+let students = JSON.parse(localStorage.getItem("studentHubStudents")) || [
+{
+id:1,
+name:"Rahul",
+email:"rahul@example.com",
+department:"CSE",
+year:"3rd Year",
+skills:["Python","SQL"]
+},
+{
+id:2,
+name:"Anusha",
+email:"anusha@example.com",
+department:"AIML",
+year:"3rd Year",
+skills:["AI","Python"]
+}
+];
+
+let editId = null;
+
+function saveData(){
+localStorage.setItem("studentHubStudents",JSON.stringify(students));
+}
+
+function updateStats(){
+
+document.getElementById("totalStudents").textContent = students.length;
+
+const departments = new Set(
+students.map(student => student.department.toLowerCase())
+);
+
+document.getElementById("totalDepartments").textContent = departments.size;
+
+const skills = new Set();
+
+students.forEach(student=>{
+student.skills.forEach(skill=>skills.add(skill.toLowerCase()));
+});
+
+document.getElementById("totalSkills").textContent = skills.size;
+}
+
+function displayStudents(){
+
+const grid = document.getElementById("studentGrid");
+const search = document.getElementById("searchInput").value.toLowerCase().trim();
+
+const filtered = students.filter(student => {
+
+const text = `
+${student.name}
+${student.email}
+${student.department}
+${student.year}
+${student.skills.join(" ")}
+`.toLowerCase();
+
+return text.includes(search);
+});
+
+if(filtered.length === 0){
+grid.innerHTML = '<div class="empty">No students found.</div>';
+updateStats();
+return;
+}
+
+grid.innerHTML = filtered.map(student => `
+
+<div class="student-card">
+
+<h3>👤 ${escapeHTML(student.name)}</h3>
+
+<p>📧 ${escapeHTML(student.email)}</p>
+
+<p>💻 ${escapeHTML(student.department)}</p>
+
+<p>🎓 ${escapeHTML(student.year)}</p>
+
+<div>
+${student.skills.map(skill =>
+`<span class="skill">${escapeHTML(skill)}</span>`
+).join("")}
+</div>
+
+<div class="card-actions">
+
+<button class="edit" onclick="editStudent(${student.id})">
+✏️ Edit
+</button>
+
+<button class="delete" onclick="deleteStudent(${student.id})">
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+updateStats();
+}
+
+function openAddModal(){
+
+editId = null;
+
+document.getElementById("modalTitle").textContent = "Add Student";
+
+document.getElementById("studentForm").reset();
+
+document.getElementById("studentModal").style.display = "flex";
+}
+
+function closeModal(){
+
+document.getElementById("studentModal").style.display = "none";
+
+editId = null;
+}
+
+function editStudent(id){
+
+const student = students.find(s => s.id === id);
+
+if(!student) return;
+
+editId = id;
+
+document.getElementById("modalTitle").textContent = "Edit Student";
+
+document.getElementById("name").value = student.name;
+document.getElementById("email").value = student.email;
+document.getElementById("department").value = student.department;
+document.getElementById("year").value = student.year;
+document.getElementById("skills").value = student.skills.join(", ");
+
+document.getElementById("studentModal").style.display = "flex";
+}
+
+function deleteStudent(id){
+
+const student = students.find(s => s.id === id);
+
+if(!student) return;
+
+const confirmDelete = confirm(
+"Delete " + student.name + " from StudentHub?"
+);
+
+if(!confirmDelete) return;
+
+students = students.filter(s => s.id !== id);
+
+saveData();
+
+displayStudents();
+}
+
+document.getElementById("studentForm").addEventListener("submit",function(event){
+
+event.preventDefault();
+
+const name = document.getElementById("name").value.trim();
+const email = document.getElementById("email").value.trim();
+const department = document.getElementById("department").value.trim();
+const year = document.getElementById("year").value.trim();
+
+const skills = document.getElementById("skills").value
+.split(",")
+.map(skill => skill.trim())
+.filter(skill => skill !== "");
+
+if(editId !== null){
+
+const student = students.find(s => s.id === editId);
+
+student.name = name;
+student.email = email;
+student.department = department;
+student.year = year;
+student.skills = skills;
+
+}else{
+
+students.push({
+id:Date.now(),
+name:name,
+email:email,
+department:department,
+year:year,
+skills:skills
+});
+
+}
+
+saveData();
+
+displayStudents();
+
+closeModal();
+
+});
+
+function escapeHTML(value){
+
+return String(value)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+}
+
+window.onclick = function(event){
+
+const modal = document.getElementById("studentModal");
+
+if(event.target === modal){
+closeModal();
+}
+
+};
+
+displayStudents();
+</script>
 
 </body>
 </html>
